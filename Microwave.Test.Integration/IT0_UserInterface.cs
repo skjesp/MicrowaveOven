@@ -4,10 +4,10 @@ using Assert = NUnit.Framework.Assert;
 
 namespace Microwave.Test.Integration
 {
-    [TestClass]
+    [TestFixture]
     public class UnitTest1
     {
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             Assert.That(true, Is.EqualTo( true ) ); // Test
