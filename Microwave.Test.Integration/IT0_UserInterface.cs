@@ -8,6 +8,7 @@ namespace Microwave.Test.Integration
         [TestMethod]
         public void TestMethod1()
         {
+
         }
     }
 }
