@@ -53,6 +53,7 @@ namespace Microwave.Test.Integration
        public void StartCooker_Timer1_Power50()
        {
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube works with 50 %")));  
        }
