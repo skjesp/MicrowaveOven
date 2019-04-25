@@ -65,7 +65,7 @@ namespace Microwave.Test.Integration
            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
 
         }
 
@@ -76,8 +76,7 @@ namespace Microwave.Test.Integration
            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
-
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
        }
     }
 }
