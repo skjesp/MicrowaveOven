@@ -99,6 +99,7 @@ namespace Microwave.Test.Integration
         {
             _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("2")));
 
         }
@@ -111,6 +112,8 @@ namespace Microwave.Test.Integration
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("cleared")));
             
         }
+
+       
 
 
 
