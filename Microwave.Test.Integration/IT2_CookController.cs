@@ -80,7 +80,7 @@ namespace Microwave.Test.Integration
         #endregion
 
         #region CookController_OnTimerTick 
-        
+
         // Zero
         [TestCase( 0, 0 )]
 
@@ -148,5 +148,53 @@ namespace Microwave.Test.Integration
             _output.DidNotReceiveWithAnyArgs();
         }
         #endregion
+
+        #region CookController_OnTimerExpired 
+
+
+        #region PowerTube_Test_Integration
+        [Test]
+        public void CookController_Running_OnTimerExpired__Calls_PowertubeTurnOff()
+        {
+            // Start CookController
+            // Parameters does not matter
+            _uut.StartCooking( 10, 10 );
+
+            // Raise the Expired Event
+            _timer.Expired += Raise.EventWith( this, EventArgs.Empty );
+
+            // Expect the CookController to call turnOff powerTube once
+            _powerTube.Received( 1 );
+
+        }
+
+        [Test]
+        public void CookController_Not_Running_OnTimerExpired__Doesnt_Call_PowertubeTurnOff()
+        {
+            // Stop CookController
+            _uut.Stop();
+
+            // Raise the Expired Event
+            _timer.Expired += Raise.EventWith( this, EventArgs.Empty );
+
+            // Expect the CookController not call turnOff() powerTube
+            _powerTube.DidNotReceive();
+
+        }
+
+
+        #endregion
+
+        #region Display_Test_Integration
+
+        [Test]
+        public void CookController_Running_OnTimerExpired__DisplayCleared()
+        {
+
+        }
+        #endregion
+
+        #endregion
+
     }
 }
