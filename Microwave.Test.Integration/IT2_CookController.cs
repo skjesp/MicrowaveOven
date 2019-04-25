@@ -31,56 +31,7 @@ namespace Microwave.Test.Integration
             _uut = new CookController( _timer, _display, _powerTube, _userInterface );  // Create CookController (UUT)
         }
 
-        #region CookController_StartCooking_Function
-        // Zero
-        [TestCase( 0, 0 )]
 
-        // Variable power
-        [TestCase( -10, 0 )]
-        [TestCase( 10, 0 )]
-
-        // Variable timeSec 
-        [TestCase( 0, -1000 )]
-        [TestCase( 0, 1000 )]
-        public void CookController_StartCooking__Starts_Timer( int power, int time )
-        {
-            // Start CookController with given parameters
-            // power should be irrelevant in this case
-            _uut.StartCooking( power, time );
-
-            // Expect tha timer.Start was called ONCE with timeSec as parameter.
-            _timer.Received( 1 ).Start(
-                Arg.Is<int>( x => x == time )
-            );
-        }
-
-
-
-        // Zero
-        [TestCase( 0, 0 )]
-
-        // Variable power
-        [TestCase( -10, 0 )]
-        [TestCase( 10, 0 )]
-
-        // Variable timeSec 
-        [TestCase( 0, -1000 )]
-        [TestCase( 0, 1000 )]
-        public void CookController_StartCooking__TurnOn_PowerTube( int power, int time )
-        {
-            // Start CookController with given parameters
-            // timer should be irrelevant in this case
-            _uut.StartCooking( power, time );
-
-            // Expect tha powerTube.TurnOn was called ONCE with power as parameter.
-            _powerTube.Received( 1 ).TurnOn(
-                                                Arg.Is<int>( x => x == power )
-                                            );
-        }
-        #endregion
-
-        #region CookController_OnTimerTick 
-        
         // Zero
         [TestCase( 0, 0 )]
 
@@ -120,33 +71,5 @@ namespace Microwave.Test.Integration
                                                 )
                                             );
         }
-
-
-        // Variable timeSec 
-        [TestCase( -10 )]
-        [TestCase( 0 )]
-        [TestCase( 10 )]
-        [TestCase( 60 )]
-        [TestCase( 65 )]
-        [TestCase( 120 )]
-        [TestCase( 125 )]
-        public void CookController_Not_Running_OnTimerTick__Nothing_Happens( int timeSec )
-        {
-            // Make sure CookController is stopped
-            // power and timeSec should be irrelevant in this case
-            _uut.Stop();
-
-            // Set timer to return timeSec as remaining
-            _timer.TimeRemaining.Returns( timeSec * 1000 );
-
-            // Raise the TimerTick Event
-            _timer.TimerTick += Raise.EventWith( this, EventArgs.Empty );
-
-            // 1. Expect the CookController to do nothing since its not cooking
-
-            // Check output wasn't called
-            _output.DidNotReceiveWithAnyArgs();
-        }
-        #endregion
     }
 }
