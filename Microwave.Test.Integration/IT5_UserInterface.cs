@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -76,12 +78,19 @@ namespace Microwave.Test.Integration
            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned off")));
        }
 
+       [Test]
        public void CookerisDone()
        {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           var wait = new AutoResetEvent(false);
+           wait.WaitOne(TimeSpan.FromSeconds(1));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
 
-       }
+        }
     }
 }
