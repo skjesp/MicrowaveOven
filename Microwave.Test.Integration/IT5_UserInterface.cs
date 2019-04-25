@@ -47,78 +47,13 @@ namespace Microwave.Test.Integration
             _cookController = cookController;
         }
 
-        [Test]
-        public void Ready_DoorOpen_LightOn()
-        {
-            // The _userInterface has subscribed to door opened, and works correctly
-            // simulating the event through NSubstitute
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
-        }
-
-        [Test]
-        public void DoorOpen_DoorClose_LightOff()
-        {
-            // The _userInterface has subscribed to door opened and closed, and works correctly
-            // simulating the event through NSubstitute
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _door.Closed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
-        }
-
-        [Test]
-        public void PowerButtonPressed_Ready_PowerIs50()
-        {
-            //The _userInterface has subscribed to powerButton pressed, and works correctly
-            // simulating the event through NSubstitute
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("50")));
-        }
-
-        [Test]
-        public void PowerButtonPressed_SetPower_PowerIs100()
-        {
-            //The _userInterface has subscribed to powerButton pressed, and works correctly
-            // simulating the event through NSubstitute
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("100")));
-        }
-
-        [Test]
-        public void TimeButtonPressed_SetPower_TimeIs1()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("1")));
-
-        }
-
-        [Test]
-        public void TimeButtonPressed_SetTime_TimeIs2()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("2")));
-
-        }
-
-        [Test]
-        public void DoorOpen_ClearDisplay()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("cleared")));
-            
-        }
-
        // actually my tests
 
        [Test]
        public void StartCooker_Timer1_Power50()
        {
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube works with 50 %")));  
        }
@@ -127,9 +62,10 @@ namespace Microwave.Test.Integration
        public void StopCooker_DoorOpen()
        {
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
 
         }
 
@@ -137,10 +73,10 @@ namespace Microwave.Test.Integration
        public void StopCooker_CancelButton()
        {
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
-
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
        }
     }
 }
