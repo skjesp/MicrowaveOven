@@ -113,9 +113,34 @@ namespace Microwave.Test.Integration
             
         }
 
-       
+       // actually my tests
 
+       [Test]
+       public void StartCooker_Timer1_Power50()
+       {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube works with 50 %")));  
+       }
 
+       [Test]
+       public void StopCooker_DoorOpen()
+       {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
 
+        }
+
+       [Test]
+       public void StopCooker_CancelButton()
+       {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
+
+       }
     }
 }
