@@ -39,7 +39,7 @@ namespace Microwave.Test.Integration
             _display = new Display(_output);
             _light = new Light(_output);
             _powerTube = new PowerTube(_output);
-            _timer = new Timer();
+            _timer = Substitute.For<ITimer>();
 
             CookController cookController = new CookController(_timer, _display, _powerTube);
             _userInterface = new UserInterface(_powerButton, _timeButton,
@@ -87,8 +87,8 @@ namespace Microwave.Test.Integration
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           var wait = new AutoResetEvent(false);
-           wait.WaitOne(TimeSpan.FromSeconds(1));
+           _timer.Expired += Raise.EventWith(this, EventArgs.Empty);
+
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
 
         }
