@@ -1,5 +1,5 @@
-﻿using System;
-using MicrowaveOvenClasses.Interfaces;
+﻿using MicrowaveOvenClasses.Interfaces;
+using System;
 
 namespace MicrowaveOvenClasses.Controllers
 {
@@ -19,7 +19,7 @@ namespace MicrowaveOvenClasses.Controllers
             ITimer timer,
             IDisplay display,
             IPowerTube powerTube,
-            IUserInterface ui) : this(timer, display, powerTube)
+            IUserInterface ui ) : this( timer, display, powerTube )
         {
             UI = ui;
         }
@@ -27,20 +27,20 @@ namespace MicrowaveOvenClasses.Controllers
         public CookController(
             ITimer timer,
             IDisplay display,
-            IPowerTube powerTube)
+            IPowerTube powerTube )
         {
             myTimer = timer;
             myDisplay = display;
             myPowerTube = powerTube;
 
-            timer.Expired += new EventHandler(OnTimerExpired);
-            timer.TimerTick += new EventHandler(OnTimerTick);
+            timer.Expired += new EventHandler( OnTimerExpired );
+            timer.TimerTick += new EventHandler( OnTimerTick );
         }
 
-        public void StartCooking(int power, int time)
+        public void StartCooking( int power, int time )
         {
-            myPowerTube.TurnOn(power);
-            myTimer.Start(time);
+            myPowerTube.TurnOn( power );
+            myTimer.Start( time );
             isCooking = true;
         }
 
@@ -51,9 +51,9 @@ namespace MicrowaveOvenClasses.Controllers
             myTimer.Stop();
         }
 
-        public void OnTimerExpired(object sender, EventArgs e)
+        public void OnTimerExpired( object sender, EventArgs e )
         {
-            if (isCooking)
+            if ( isCooking )
             {
                 myPowerTube.TurnOff();
                 UI.CookingIsDone();
@@ -61,10 +61,14 @@ namespace MicrowaveOvenClasses.Controllers
             }
         }
 
-        public void OnTimerTick(object sender, EventArgs e)
+        public void OnTimerTick( object sender, EventArgs e )
         {
             int remaining = myTimer.TimeRemaining;
-            myDisplay.ShowTime(remaining/60, remaining % 60);
+
+            // Convert remaining to seconds
+            remaining = remaining / 1000;
+
+            myDisplay.ShowTime( remaining / 60, remaining % 60 );
         }
     }
 }
