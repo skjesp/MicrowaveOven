@@ -78,5 +78,10 @@ namespace Microwave.Test.Integration
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
        }
+
+       public void CookerisDone()
+       {
+
+       }
     }
 }
