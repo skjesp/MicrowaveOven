@@ -79,6 +79,8 @@ namespace Microwave.Test.Integration
         }
         #endregion
 
+        #region CookController_OnTimerTick 
+        
         // Zero
         [TestCase( 0, 0 )]
 
@@ -117,22 +119,18 @@ namespace Microwave.Test.Integration
                                                     txt => txt == expectedOutput
                                                 )
                                             );
-            Console.WriteLine( expectedOutput );
         }
 
-        // Zero
-        [TestCase( 0, 0 )]
-
-        // Variable power
-        [TestCase( -10, 0 )]
-        [TestCase( 10, 0 )]
 
         // Variable timeSec 
-        [TestCase( 0, -10 )]
-        [TestCase( 0, 120 )]
-        [TestCase( 0, 60 )]
-        [TestCase( 0, 65 )]
-        public void CookController_Not_Running_OnTimerTick__Nothing_Happens( int power, int timeSec )
+        [TestCase( -10 )]
+        [TestCase( 0 )]
+        [TestCase( 10 )]
+        [TestCase( 60 )]
+        [TestCase( 65 )]
+        [TestCase( 120 )]
+        [TestCase( 125 )]
+        public void CookController_Not_Running_OnTimerTick__Nothing_Happens( int timeSec )
         {
             // Make sure CookController is stopped
             // power and timeSec should be irrelevant in this case
@@ -144,20 +142,11 @@ namespace Microwave.Test.Integration
             // Raise the TimerTick Event
             _timer.TimerTick += Raise.EventWith( this, EventArgs.Empty );
 
-            // 1. Expect the CookController to retrieve the timers TimeRemaining
-            // 2. CookController calls displays.ShowTime(minutes, seconds) 
-            // 3. display write timeSec to output 
+            // 1. Expect the CookController to do nothing since its not cooking
 
-            // Expected output string
-            string expectedOutput = $"Display shows: {timeSec / 60:D2}:{timeSec % 60:D2}";
-
-            // Check output was called once with the correct string format
-            _output.Received( 1 ).OutputLine(
-                Arg.Is<string>(
-                    txt => txt == expectedOutput
-                )
-            );
-            Console.WriteLine( expectedOutput );
+            // Check output wasn't called
+            _output.DidNotReceiveWithAnyArgs();
         }
+        #endregion
     }
 }
