@@ -62,7 +62,8 @@ namespace Microwave.Test.Integration
        public void StopCooker_DoorOpen()
        {
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
 
@@ -72,7 +73,8 @@ namespace Microwave.Test.Integration
        public void StopCooker_CancelButton()
        {
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
 
