@@ -57,7 +57,8 @@ namespace Microwave.Test.Integration
            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube works with 50 %")));  
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube works with 50 %")));
+            
        }
 
        [Test]
@@ -67,7 +68,7 @@ namespace Microwave.Test.Integration
            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned off")));
 
         }
 
