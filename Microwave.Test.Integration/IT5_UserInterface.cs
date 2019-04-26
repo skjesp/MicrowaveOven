@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -37,7 +39,7 @@ namespace Microwave.Test.Integration
             _display = new Display(_output);
             _light = new Light(_output);
             _powerTube = new PowerTube(_output);
-            _timer = new Timer();
+            _timer = Substitute.For<ITimer>();
 
             CookController cookController = new CookController(_timer, _display, _powerTube);
             _userInterface = new UserInterface(_powerButton, _timeButton,
@@ -47,75 +49,48 @@ namespace Microwave.Test.Integration
             _cookController = cookController;
         }
 
-        [Test]
-        public void Ready_DoorOpen_LightOn()
-        {
-            // The _userInterface has subscribed to door opened, and works correctly
-            // simulating the event through NSubstitute
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
-        }
+       // actually my tests
 
-        [Test]
-        public void DoorOpen_DoorClose_LightOff()
-        {
-            // The _userInterface has subscribed to door opened and closed, and works correctly
-            // simulating the event through NSubstitute
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _door.Closed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
-        }
+       [Test]
+       public void StartCooker_Timer1_Power50()
+       {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube works with 50 %")));  
+       }
 
-        [Test]
-        public void PowerButtonPressed_Ready_PowerIs50()
-        {
-            //The _userInterface has subscribed to powerButton pressed, and works correctly
-            // simulating the event through NSubstitute
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("50")));
-        }
-
-        [Test]
-        public void PowerButtonPressed_SetPower_PowerIs100()
-        {
-            //The _userInterface has subscribed to powerButton pressed, and works correctly
-            // simulating the event through NSubstitute
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("100")));
-        }
-
-        [Test]
-        public void TimeButtonPressed_SetPower_TimeIs1()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("1")));
+       [Test]
+       public void StopCooker_DoorOpen()
+       {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned of")));
 
         }
 
-        [Test]
-        public void TimeButtonPressed_SetTime_TimeIs2()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("2")));
+       [Test]
+       public void StopCooker_CancelButton()
+       {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned off")));
+       }
+
+       [Test]
+       public void CookerisDone()
+       {
+           _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+           _timer.Expired += Raise.EventWith(this, EventArgs.Empty);
+
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
 
         }
-
-        [Test]
-        public void DoorOpen_ClearDisplay()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("cleared")));
-            
-        }
-
-       
-
-
-
     }
 }
