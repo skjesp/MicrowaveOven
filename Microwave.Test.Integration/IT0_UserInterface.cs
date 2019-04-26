@@ -32,7 +32,6 @@ namespace Microwave.Test.Integration
             _startCancelButton = Substitute.For<IButton>();
             _display = Substitute.For<IDisplay>();
             _door = Substitute.For<IDoor>();
-
             _light = new Light(_output);
             _userInterface = new UserInterface(_powerbutton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
         }
@@ -41,7 +40,7 @@ namespace Microwave.Test.Integration
         public void TurnOn_Ready_TurnOnCalledOnce()
         {
             _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
         [Test]
@@ -49,7 +48,7 @@ namespace Microwave.Test.Integration
         {
             _door.Opened += Raise.EventWith(this, EventArgs.Empty);
             _door.Closed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
         }
 
         [Test]
@@ -63,7 +62,7 @@ namespace Microwave.Test.Integration
             _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
         [Test]
@@ -78,7 +77,7 @@ namespace Microwave.Test.Integration
             _userInterface.CookingIsDone();
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
         }
 
         [Test]
@@ -93,7 +92,7 @@ namespace Microwave.Test.Integration
             _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
         }
     }
 }
