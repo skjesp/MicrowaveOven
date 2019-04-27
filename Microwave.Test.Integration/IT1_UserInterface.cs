@@ -42,6 +42,17 @@ namespace Microwave.Test.Integration
         //**STATE: READY*****
         //*******************
 
+        public void PowerButtonPressed_Ready_CorrectOutput()
+        {
+            //Arrange - No need to arrange since beginning state is Ready.
+            
+            //Act
+            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            
+            //Assert
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display shows: 50 W")));
+        }
+
 
         //*******************
         //**STATE: SETPOWER**
@@ -75,7 +86,7 @@ namespace Microwave.Test.Integration
         [TestCase(0, 1, "Display shows: 50 W")]
         [TestCase(13, 1, "Display shows: 700 W")]
         [TestCase(14, 2, "Display shows: 50 W")]
-        public void PowerButtonPressed_Ready_CorrectOutput(int ButtonPresses, int timesCalled, string Result)
+        public void PowerButtonPressed_SetPower_CorrectOutput(int ButtonPresses, int timesCalled, string Result)
         {
             //Arrange
             _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -143,7 +154,7 @@ namespace Microwave.Test.Integration
         //**STATE: COOKING**
         //*******************
         [Test]
-        public void DoorOpened_Cooking_ClearDisplay()
+        public void DoorOpened_Cooking_CorrectOutput()
         {
             //Arrange
             _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -158,7 +169,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void StartCancelButtonPressed_Cooking_ClearDisplay()
+        public void StartCancelButtonPressed_Cooking_CorrectOutput()
         {
             //Arrange
             _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -167,6 +178,21 @@ namespace Microwave.Test.Integration
 
             //Act
             _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            //Assert
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
+        }
+
+        [Test]
+        public void CookingIsDone_Cooking_CorrectOutput()
+        {
+            //Arrange
+            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            //Act
+            _userInterface.CookingIsDone();
 
             //Assert
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
