@@ -47,5 +47,33 @@ namespace Microwave.Test.Integration
             cookController.UI = _userInterface;
             _cookController = cookController;
         }
+
+        [Test]
+        public void PowerButtonPressed()
+        {
+            _powerButton.Press();
+
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("50 W")));
+
+        }
+
+        [Test]
+        public void TimerButtonPressed()
+        {
+            _powerButton.Press();
+            _timeButton.Press();
+
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("01:00")));
+        }
+
+        [Test]
+        public void StartButtonPressed()
+        {
+            _powerButton.Press();
+            _timeButton.Press();
+            _startCancelButton.Press();
+
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+        }
     }
 }
