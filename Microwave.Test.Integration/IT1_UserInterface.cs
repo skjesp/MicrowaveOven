@@ -91,7 +91,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void TimeButtonPressed_SetPower_CorrectOutput(int TimeButtonPresses, int timesCalled, string Result)
+        public void TimeButtonPressed_SetPower_CorrectOutput()
         {
             //Arrange
             _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -100,19 +100,20 @@ namespace Microwave.Test.Integration
             _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             
             //Assert
-            _output.Received(timesCalled).OutputLine(Arg.Is<string>(str => str.Contains(Result)));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display shows: 01:00")));
         }
 
         //*******************
         //**STATE: SETTIME***
         //*******************
-        [TestCase(2, 1, "Display shows: 02:00")]
-        [TestCase(99, 1, "Display shows: 99:00")]
-        [TestCase(100, 1, "Display shows: 100:00")]
+        [TestCase(1, 1, "Display shows: 02:00")]
+        [TestCase(98, 1, "Display shows: 99:00")]
+        [TestCase(99, 1, "Display shows: 100:00")]
         public void TimeButtonPressed_SetTime_CorrectOutput(int TimeButtonPresses, int timesCalled, string Result)
         {
             //Arrange
             _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             //Act
             for (int i = 0; i < TimeButtonPresses; i++)
