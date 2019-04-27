@@ -41,17 +41,7 @@ namespace Microwave.Test.Integration
         //*******************
         //**STATE: READY*****
         //*******************
-        [TestCase(1, 1, "Display shows: 50 W")]
-        [TestCase(14, 1, "Display shows: 700 W")]
-        [TestCase(15, 2, "Display shows: 50 W")]
-        public void PowerButtonPressed_Ready_CorrectOutput(int ButtonPresses, int timesCalled, string Result)
-        {
-            for (int i = 0; i < ButtonPresses; i++)
-            {
-                _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            }
-            _output.Received(timesCalled).OutputLine(Arg.Is<string>(str => str.Contains(Result)));
-        }
+
 
         //*******************
         //**STATE: SETPOWER**
@@ -81,7 +71,26 @@ namespace Microwave.Test.Integration
             //Assert
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
         }
-        
+
+        [TestCase(0, 1, "Display shows: 50 W")]
+        [TestCase(13, 1, "Display shows: 700 W")]
+        [TestCase(14, 2, "Display shows: 50 W")]
+        public void PowerButtonPressed_Ready_CorrectOutput(int ButtonPresses, int timesCalled, string Result)
+        {
+            //Arrange
+            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            //Act
+            for (int i = 0; i < ButtonPresses; i++)
+            {
+                _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            }
+
+            //Assert
+            _output.Received(timesCalled).OutputLine(Arg.Is<string>(str => str.Contains(Result)));
+        }
+
+        [Test]
         public void TimeButtonPressed_SetPower_CorrectOutput(int TimeButtonPresses, int timesCalled, string Result)
         {
             //Arrange

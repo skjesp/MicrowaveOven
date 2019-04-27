@@ -35,7 +35,9 @@ namespace Microwave.Test.Integration
             _light = new Light(_output);
             _userInterface = new UserInterface(_powerbutton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
         }
-
+        //*******************
+        //**STATE: READY*****
+        //*******************
         [Test]
         public void DoorOpened_Ready_CorrectOutput()
         {
@@ -43,12 +45,53 @@ namespace Microwave.Test.Integration
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
+        //*******************
+        //*STATE: DOORISOPEN*
+        //*******************
         [Test]
-        public void DoorClosed_Ready_CorrectOutput()
+        public void DoorClosed_DoorIsOpen_CorrectOutput()
         {
+            //Arrange
             _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+
+            //Act
             _door.Closed += Raise.EventWith(this, EventArgs.Empty);
+
+            //Assert
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
+        }
+
+        //*******************
+        //**STATE: SETPOWER**
+        //*******************
+        [Test]
+        public void DoorOpened_SetPower_CorrectOutput()
+        {
+            //Arrange
+            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            //Act
+            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+
+            //Assert
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
+        }
+
+        //*******************
+        //**STATE: SETTIME***
+        //*******************
+        [Test]
+        public void DoorOpened_SetTime_CorrectOutput()
+        {
+            //Arrange
+            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            //Act
+            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+
+            //Assert
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
         [Test]
@@ -65,6 +108,9 @@ namespace Microwave.Test.Integration
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
+        //*******************
+        //**STATE: COOKING***
+        //*******************
         [Test]
         public void StartCancelButtonPressed_Cooking_CorrectOutput()
         {
