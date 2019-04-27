@@ -37,14 +37,14 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void TurnOn_Ready_TurnOnCalledOnce()
+        public void DoorOpened_Ready_CorrectOutput()
         {
             _door.Opened += Raise.EventWith(this, EventArgs.Empty);
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
         [Test]
-        public void TurnOff_Ready_TurnOffCalledOnce()
+        public void DoorClosed_Ready_CorrectOutput()
         {
             _door.Opened += Raise.EventWith(this, EventArgs.Empty);
             _door.Closed += Raise.EventWith(this, EventArgs.Empty);
@@ -52,7 +52,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void TurnOn_SetTime_TurnOnCalledOnce()
+        public void StartCancelButtonPressed_SetTime_CorrectOutput()
         {
             //Arrange
             _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -66,7 +66,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void TurnOff_Cooking_TurnOffCalledOnceWhenCookingIsDone()
+        public void StartCancelButtonPressed_Cooking_CorrectOutput()
         {
             //Arrange
             _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -75,21 +75,6 @@ namespace Microwave.Test.Integration
 
             //Act
             _userInterface.CookingIsDone();
-
-            //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
-        }
-
-        [Test]
-        public void TurnOff_Cooking_TurnOffCalledOnceWhenCancelIsPressed()
-        {
-            //Arrange
-            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-
-            //Act
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             //Assert
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));

@@ -23,7 +23,7 @@ namespace Microwave.Test.Unit
         public void TurnOn_WasOff_CorrectOutput()
         {
             uut.TurnOn();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace Microwave.Test.Unit
         {
             uut.TurnOn();
             uut.TurnOff();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
         }
 
         [Test]
@@ -39,14 +39,14 @@ namespace Microwave.Test.Unit
         {
             uut.TurnOn();
             uut.TurnOn();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
         [Test]
         public void TurnOff_WasOff_CorrectOutput()
         {
             uut.TurnOff();
-            output.DidNotReceive().OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            output.DidNotReceive().OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
         }
 
 
