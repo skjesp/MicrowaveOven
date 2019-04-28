@@ -46,7 +46,6 @@ namespace Microwave.Test.Integration
             _uut.StartCooking(power,timeinsec);
 
             _timer.TimeRemaining.Returns(timeinsec * 1000);
-
             _timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
 
             string expectedout = $"Display shows: {timeinsec / 60:D2}:{timeinsec % 60:D2}";
