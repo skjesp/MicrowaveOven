@@ -39,6 +39,7 @@ namespace Microwave.Test.Integration
                 _powerTube,
                 _userInterface
             );
+
             _userInterface = new UserInterface
             (
                 _powerButton,
