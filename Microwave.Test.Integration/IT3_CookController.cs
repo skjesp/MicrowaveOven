@@ -18,7 +18,7 @@ namespace Microwave.Test.Integration
         private IOutput _output;
 
         [SetUp]
-        void Init()
+        public void Init()
         {
             _userInterface = Substitute.For<IUserInterface>();                      // Substituting Interface
             _timer = Substitute.For<ITimer>();                                      // Substituting Timer
@@ -30,18 +30,18 @@ namespace Microwave.Test.Integration
             _uut = new CookController(_timer,_display,_powerTube,_userInterface);   // UUT Constructor.
         }
 
-        // Zero
-        [TestCase(0,0)]
+        // Zero (OutOfRangeException, da power skal være mellem 1;100)
+        [TestCase(1,0)]
 
         // Power Test 
         [TestCase(1,0)]
         [TestCase(100,0)]
 
         // Time Test
-        [TestCase(0,60)]
-        [TestCase(0,90)]
-        [TestCase(0,30)]
-        void CookController_Running_OnTimerTick_WithReal_PowerTube(int power, int timeinsec)
+        [TestCase(10,60)]
+        [TestCase(10,90)]
+        [TestCase(10,30)]
+        public void CookController_Running_OnTimerTick_WithReal_PowerTube(int power, int timeinsec)
         {
             _uut.StartCooking(power,timeinsec);
 
@@ -49,7 +49,7 @@ namespace Microwave.Test.Integration
 
             _timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
 
-            string expectedout = $"Display shows: {timeinsec / 60:D2}:{timeinsec / 60:D2}";
+            string expectedout = $"Display shows: {timeinsec / 60:D2}:{timeinsec % 60:D2}";
             _output.Received(1).OutputLine( Arg.Is<string>(txt => txt == expectedout));
         }
     }

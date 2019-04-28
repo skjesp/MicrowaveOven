@@ -21,7 +21,7 @@ namespace Microwave.Test.Integration
         private Output _uut;
 
         [SetUp]
-        void Init()
+        public void Init()
         {
             _door = new Door();
             _powerButton = new Button();
@@ -52,5 +52,6 @@ namespace Microwave.Test.Integration
             );
         }
 
+        //todo: Write Tests Here.
     }
 }
