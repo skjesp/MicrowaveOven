@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 
-
-
 namespace Microwave.Test.Integration
 {
-    class IT3_CookController
+    internal class IT3_CookController
     {
         private CookController _uut;
         private IUserInterface _userInterface;
