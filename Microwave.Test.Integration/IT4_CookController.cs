@@ -34,7 +34,7 @@ namespace Microwave.Test.Integration
         // Check that the display prints to the output the correct amount of times
         // The display should print once every second passed
         [Parallelizable]    // Avoid test to take ages
-        [Retry( 2 )]
+        [Retry( 5 )]
         [TestCase( 0 )]
         [TestCase( 1 )]
         [TestCase( 2 )]
