@@ -1,5 +1,5 @@
-﻿using System;
-using MicrowaveOvenClasses.Interfaces;
+﻿using MicrowaveOvenClasses.Interfaces;
+using System;
 
 namespace MicrowaveOvenClasses.Boundary
 {
@@ -9,32 +9,32 @@ namespace MicrowaveOvenClasses.Boundary
 
         private bool IsOn = false;
 
-        public PowerTube(IOutput output)
+        public PowerTube( IOutput output )
         {
             myOutput = output;
         }
 
-        public void TurnOn(int power)
+        public void TurnOn( int power )
         {
-            if (power < 50 || 750 < power)
+            if ( power < 50 || 750 < power )
             {
-                throw new ArgumentOutOfRangeException("power", power, "Must be between 50 and 750 W (incl.)");
+                throw new ArgumentOutOfRangeException( "power", power, "Must be between 50 and 750 W (incl.)" );
             }
 
-            if (IsOn)
+            if ( IsOn )
             {
-                throw new ApplicationException("PowerTube.TurnOn: is already on");
+                throw new ApplicationException( "PowerTube.TurnOn: is already on" );
             }
 
-            myOutput.OutputLine($"PowerTube works with {power} W");
+            myOutput.OutputLine( $"PowerTube works with {power} W" );
             IsOn = true;
         }
 
         public void TurnOff()
         {
-            if (IsOn)
+            if ( IsOn )
             {
-                myOutput.OutputLine($"PowerTube turned off");
+                myOutput.OutputLine( $"PowerTube turned off" );
             }
 
             IsOn = false;
