@@ -34,5 +34,25 @@ namespace Microwave.Test.Integration
             _powerTube = new PowerTube(_output);                                    // Using real PowerTube
             _uut = new CookController(_timer,_display,_powerTube,_userInterface);   // UUT Constructor.
         }
+
+        // Zero
+        [TestCase(0,0)]
+
+        // Power Test 
+        [TestCase(1,0)]
+        [TestCase(100,0)]
+
+        // Time Test
+        [TestCase(0,60)]
+        [TestCase(0,90)]
+        [TestCase(0,30)]
+        void CookController_Running_OnTimerTick_WithReal_PowerTube(int power, int timeinsec)
+        {
+            _uut.StartCooking(power,timeinsec);
+
+            _timer.TimeRemaining.Returns(timeinsec * 1000);
+
+            _timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
+        }
     }
 }
