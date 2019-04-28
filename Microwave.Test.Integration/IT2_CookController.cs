@@ -32,21 +32,10 @@ namespace Microwave.Test.Integration
         }
 
 
-        // Zero
-        [TestCase( 0, 0 )]
-
-        // Variable power
-        [TestCase( -10, 0 )]
-        [TestCase( 10, 0 )]
-
-        // Variable timeSec 
-        [TestCase( 0, -10 )]
-        [TestCase( 0, 12 )]
-        [TestCase( 0, 120 )]
-        [TestCase( 0, 60 )]
-        [TestCase( 0, 65 )]
-        public void CookController_Running_OnTimerTick__Display_Shows_Time( int power, int timeSec )
+        [Test]
+        public void CookController_Running_OnTimerTick__Display_Shows_Time( [Range( -10, 240, 10 )]int timeSec )
         {
+            int power = 100;
             // Start CookController with given parameters
             // power should be irrelevant in this case
             _uut.StartCooking( power, timeSec );
