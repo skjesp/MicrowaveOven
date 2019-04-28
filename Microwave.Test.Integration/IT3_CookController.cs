@@ -31,16 +31,18 @@ namespace Microwave.Test.Integration
         }
 
         // Zero (OutOfRangeException, da power skal være mellem 1;100)
-        [TestCase(1,0)]
+        [TestCase(50,0)]
 
         // Power Test 
-        [TestCase(1,0)]
+        [TestCase(50,0)]
         [TestCase(100,0)]
+        [TestCase(350,0)]
+        [TestCase(750,0)]
 
         // Time Test
-        [TestCase(10,60)]
-        [TestCase(10,90)]
-        [TestCase(10,30)]
+        [TestCase(50,60)]
+        [TestCase(50,90)]
+        [TestCase(50,30)]
         public void CookController_Running_OnTimerTick_WithReal_PowerTube(int power, int timeinsec)
         {
             _uut.StartCooking(power,timeinsec);
