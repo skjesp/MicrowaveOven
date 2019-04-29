@@ -73,7 +73,7 @@ namespace Microwave.Test.Integration
             _timeButton.Press();
             _startCancelButton.Press();
 
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("PowerTube works with 50 W")));
         }
     }
 }
