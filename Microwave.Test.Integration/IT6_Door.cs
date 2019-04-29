@@ -1,4 +1,5 @@
-﻿using MicrowaveOvenClasses.Boundary;
+﻿
+using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
