@@ -75,7 +75,6 @@
     <Compile Include="IT5_UserInterface.cs" />
     <Compile Include="IT6_Door.cs" />
     <Compile Include="IT7_Button.cs" />
-    <Compile Include="IT8_Output.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
