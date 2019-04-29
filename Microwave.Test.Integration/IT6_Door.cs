@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Microwave.Test.Integration
 {
-    class IT6_Door
+    internal class IT6_Door
     {
         private IUserInterface _userInterface;
         private ICookController _cookController;
