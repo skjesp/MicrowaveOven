@@ -46,10 +46,6 @@ namespace Microwave.Test.Integration
         public void CookController_Running_OnTimerTick_WithReal_PowerTube(int power, int timeinsec)
         {
             _uut.StartCooking(power,timeinsec);
-
-            //_timer.TimeRemaining.Returns(timeinsec * 1000);
-            //_timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
-
             string expectedout = $"PowerTube works with {power} W";
             _output.Received(1).OutputLine( Arg.Is<string>(txt => txt == expectedout));
         }
