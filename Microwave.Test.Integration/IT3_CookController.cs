@@ -30,64 +30,32 @@ namespace Microwave.Test.Integration
             _uut = new CookController(_timer,_display,_powerTube,_userInterface);   // UUT Constructor.
         }
 
-        // Zero (OutOfRangeException, da power skal være mellem 1;100)
-        [TestCase(50,0)]
-
         // Power Test 
         [TestCase(50,0)]
         [TestCase(100,0)]
-        [TestCase(350,0)]
+        [TestCase(550,0)]
         [TestCase(700,0)]
-
-        // Time Test
-        [TestCase(50,60)]
-        [TestCase(50,90)]
-        [TestCase(50,30)]
-        public void CookController_Running_OnTimerTick_WithReal_PowerTube(int power, int timeinsec)
+        public void CookController_StartCooking_WithReal_PowerTube(int power, int timeinsec)
         {
             _uut.StartCooking(power,timeinsec);
             string expectedout = $"PowerTube works with {power} W";
             _output.Received(1).OutputLine( Arg.Is<string>(txt => txt == expectedout));
         }
 
-        // Zero (OutOfRangeException, da power skal være mellem 1;100)
-        [TestCase(50, 0)]
-
-        // Power Test 
-        [TestCase(50, 0)]
-        [TestCase(100, 0)]
-        [TestCase(350, 0)]
-        [TestCase(700, 0)]
-
-        // Time Test
-        [TestCase(50, 60)]
-        [TestCase(50, 90)]
-        [TestCase(50, 30)]
-        public void CookController_Running_TimerExpired_PowerTube_TurnsOff(int power, int timeinsec)
+        [Test]
+        public void CookController_Running_TimerExpired_PowerTube_TurnsOff()
         {
-            _uut.StartCooking(power, timeinsec);
+            _uut.StartCooking(50, 0);
             _timer.Expired += Raise.EventWith(this, EventArgs.Empty);
 
             string expectedout = $"PowerTube turned off";
             _output.Received(1).OutputLine(Arg.Is<string>(txt => txt == expectedout));
         }
 
-        // Zero (OutOfRangeException, da power skal være mellem 1;100)
-        [TestCase(50, 0)]
-
-        // Power Test 
-        [TestCase(50, 0)]
-        [TestCase(100, 0)]
-        [TestCase(350, 0)]
-        [TestCase(700, 0)]
-
-        // Time Test
-        [TestCase(50, 60)]
-        [TestCase(50, 90)]
-        [TestCase(50, 30)]
-        public void CookController_Running_CookController_Stops_PowerTube_Turns_Off(int power, int timeinsec)
+        [Test]
+        public void CookController_Running_CookController_Stops_PowerTube_Turns_Off()
         {
-            _uut.StartCooking(power, timeinsec);
+            _uut.StartCooking(50, 0);
             _uut.Stop();
 
             string expectedout = $"PowerTube turned off";
