@@ -37,7 +37,7 @@ namespace Microwave.Test.Integration
         [TestCase(50,0)]
         [TestCase(100,0)]
         [TestCase(350,0)]
-        [TestCase(750,0)]
+        [TestCase(700,0)]
 
         // Time Test
         [TestCase(50,60)]
