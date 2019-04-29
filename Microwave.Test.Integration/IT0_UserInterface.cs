@@ -112,7 +112,7 @@ namespace Microwave.Test.Integration
         //**STATE: COOKING***
         //*******************
         [Test]
-        public void StartCancelButtonPressed_Cooking_CorrectOutput()
+        public void CookingIsDone_Cooking_CorrectOutput()
         {
             //Arrange
             _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -121,6 +121,21 @@ namespace Microwave.Test.Integration
 
             //Act
             _userInterface.CookingIsDone();
+
+            //Assert
+            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
+        }
+
+        [Test]
+        public void StartCancelButtonPressed_Cooking_CorrectOutput()
+        {
+            //Arrange
+            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            //Act
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             //Assert
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
