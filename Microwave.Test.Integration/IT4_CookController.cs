@@ -4,11 +4,12 @@ using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Microwave.Test.Integration
 {
-    class IT4_CookController
+    internal class IT4_CookController
     {
 
         private CookController _uut;
@@ -58,7 +59,8 @@ namespace Microwave.Test.Integration
             _uut.StartCooking( power, timeSec );
 
             // Wait for timer to finish
-            while ( _timer.TimeRemaining > 0 ) { }
+            while ( _timer.TimeRemaining > 0 )
+            { }
 
             // Hard copy output list, since it might change afterwards timer is done
             var outputListHardCopy = new List<string>( outputList );
@@ -90,5 +92,43 @@ namespace Microwave.Test.Integration
                 Assert.AreEqual( timeSec - 1, displayPrintCount );
             }
         }
+
+        [Test]
+        public void CookController_StopsTimer()
+        {
+            int timeSec = 6;
+            int power = 50;
+
+
+            // Start CookController with given parameters
+            _uut.StartCooking( power, timeSec );
+
+            // Let timer run for a bit
+            while ( _timer.TimeRemaining > 4000 )
+            { }
+
+            // Stop cookController -> Stops timer
+            _uut.Stop();
+
+            // Note down the timers timeRemainder 
+            int oldTimeRemaining = _timer.TimeRemaining;
+
+            // Wait a few seconds to check if the 
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            // Wait two seconds to let the timer keep counting (If running)
+            int waitSeconds = 2;
+            while ( stopWatch.ElapsedMilliseconds > waitSeconds * 1000 )
+            { }
+
+            // If the oldTimeRemainder equals the timer's timeRemainder the timer has stopped
+            Assert.AreEqual( oldTimeRemaining, _timer.TimeRemaining );
+
+        }
+
+
+
+        // Test when timer starts from cookingcontroller
     }
 }
