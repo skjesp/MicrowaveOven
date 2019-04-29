@@ -4,11 +4,12 @@ using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    class IT5_UserInterface
+    internal class IT5_UserInterface
     {
         private IUserInterface _userInterface;
         private ICookController _cookController;
@@ -33,7 +34,8 @@ namespace Microwave.Test.Integration
             _display = new Display( _output );
             _light = new Light( _output );
             _powerTube = new PowerTube( _output );
-            _timer = Substitute.For<ITimer>();
+            //_timer = Substitute.For<ITimer>();
+            _timer = new Timer();
 
             CookController cookController = new CookController( _timer, _display, _powerTube );
             _userInterface = new UserInterface( _powerButton, _timeButton,
@@ -82,7 +84,15 @@ namespace Microwave.Test.Integration
             _powerButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
             _timeButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
             _startCancelButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
-            _timer.Expired += Raise.EventWith( this, EventArgs.Empty );
+
+            // Wait a few seconds to check if the 
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            // Wait for timer to expire
+            int waitSeconds = 65;
+            while ( stopWatch.ElapsedMilliseconds < waitSeconds * 1000 )
+            { }
 
             _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned off" ) ) );
 

@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MicrowaveOvenClasses.Boundary;
+﻿using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 using System;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Microwave.Test.Integration
 {
@@ -32,8 +30,8 @@ namespace Microwave.Test.Integration
             _startCancelButton = Substitute.For<IButton>();
             _display = Substitute.For<IDisplay>();
             _door = Substitute.For<IDoor>();
-            _light = new Light(_output);
-            _userInterface = new UserInterface(_powerbutton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
+            _light = new Light( _output );
+            _userInterface = new UserInterface( _powerbutton, _timeButton, _startCancelButton, _door, _display, _light, _cookController );
         }
         //*******************
         //**STATE: READY*****
@@ -41,8 +39,8 @@ namespace Microwave.Test.Integration
         [Test]
         public void DoorOpened_Ready_CorrectOutput()
         {
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
+            _door.Opened += Raise.EventWith( this, EventArgs.Empty );
+            _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned on" ) ) );
         }
 
         //*******************
@@ -52,13 +50,13 @@ namespace Microwave.Test.Integration
         public void DoorClosed_DoorIsOpen_CorrectOutput()
         {
             //Arrange
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            _door.Opened += Raise.EventWith( this, EventArgs.Empty );
 
             //Act
-            _door.Closed += Raise.EventWith(this, EventArgs.Empty);
+            _door.Closed += Raise.EventWith( this, EventArgs.Empty );
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
+            _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned off" ) ) );
         }
 
         //*******************
@@ -68,13 +66,13 @@ namespace Microwave.Test.Integration
         public void DoorOpened_SetPower_CorrectOutput()
         {
             //Arrange
-            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _powerbutton.Pressed += Raise.EventWith( this, EventArgs.Empty );
 
             //Act
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            _door.Opened += Raise.EventWith( this, EventArgs.Empty );
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
+            _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned on" ) ) );
         }
 
         //*******************
@@ -84,28 +82,28 @@ namespace Microwave.Test.Integration
         public void DoorOpened_SetTime_CorrectOutput()
         {
             //Arrange
-            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _powerbutton.Pressed += Raise.EventWith( this, EventArgs.Empty );
+            _timeButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
 
             //Act
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            _door.Opened += Raise.EventWith( this, EventArgs.Empty );
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
+            _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned on" ) ) );
         }
 
         [Test]
         public void StartCancelButtonPressed_SetTime_CorrectOutput()
         {
             //Arrange
-            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            
+            _powerbutton.Pressed += Raise.EventWith( this, EventArgs.Empty );
+            _timeButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
+
             //Act
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
+            _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned on" ) ) );
         }
 
         //*******************
@@ -115,30 +113,30 @@ namespace Microwave.Test.Integration
         public void CookingIsDone_Cooking_CorrectOutput()
         {
             //Arrange
-            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _powerbutton.Pressed += Raise.EventWith( this, EventArgs.Empty );
+            _timeButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
+            _startCancelButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
 
             //Act
             _userInterface.CookingIsDone();
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
+            _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned off" ) ) );
         }
 
         [Test]
         public void StartCancelButtonPressed_Cooking_CorrectOutput()
         {
             //Arrange
-            _powerbutton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _powerbutton.Pressed += Raise.EventWith( this, EventArgs.Empty );
+            _timeButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
+            _startCancelButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
 
             //Act
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith( this, EventArgs.Empty );
 
             //Assert
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
+            _output.Received( 1 ).OutputLine( Arg.Is<string>( str => str.Contains( "Light is turned off" ) ) );
         }
     }
 }

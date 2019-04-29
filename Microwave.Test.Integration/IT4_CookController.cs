@@ -128,7 +128,22 @@ namespace Microwave.Test.Integration
         }
 
 
+        [Test]
+        public void CookController_startCooking_timerStarts()
+        {
+            _uut.StartCooking( 100, 5 );
 
-        // Test when timer starts from cookingcontroller
+            int check1 = _timer.TimeRemaining;
+
+            // Wait a few seconds to check if the 
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while ( stopWatch.ElapsedMilliseconds < 2000 )
+            { }
+
+            // Exect the timer to count down, which means it has started
+            Assert.Less( _timer.TimeRemaining, check1 );
+        }
     }
 }
